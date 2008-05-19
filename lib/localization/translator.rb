@@ -66,10 +66,10 @@ module Mack
           raise InvalidConfiguration.new if base_lang.nil?
           raise LanguageFileNotFound.new if !File.exists?(path)
           
-          data = ""
-          IO.foreach(path) do |line|
-            data += (line + "\n")
-          end
+          data = File.read(path)
+          # IO.foreach(path) do |line|
+          #   data += (line + "\n")
+          # end
           content_hash = eval data
           l10n_config.set("#{cache_key}", content_hash, l10n_config.content_expiry)
         end

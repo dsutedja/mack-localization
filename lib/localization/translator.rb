@@ -4,12 +4,13 @@ module Mack
       def gets(view_sym, key, lang)
         view_name = view_sym.to_s
         base_lang = l10n_config.base_language
-        base_lang = lang if !lang.nil?
+        base_lang = lang.to_s if !lang.nil?
         
         raise UnsupportedLanguage.new(base_lang) if !l10n_config.supported_languages.include?(base_lang)
         
         cache_key = "#{view_sym}_#{base_lang}_content"
         path      = File.join(l10n_config.base_directory, "views", "#{view_name}", "content_#{base_lang}.rb")
+        puts path
         content_hash = load_content_hash(cache_key, base_lang, path)
       
         raise UnknownStringKey.new(key) if content_hash[key] == nil

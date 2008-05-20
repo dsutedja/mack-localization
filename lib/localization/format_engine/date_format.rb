@@ -30,6 +30,7 @@ module Mack
       #    DD, MM dd, yyyy or Tuesday, December 12, 2008 in English
       #
       def format(time, type, lang)
+        day          = time.day
         day_of_week  = time.wday
         day_of_month = time.mday
         month        = time.month
@@ -37,13 +38,16 @@ module Mack
         
         hash = @settings[lang.to_sym]
         template = hash["df_#{type}".to_sym].dup
-        template.gsub!("mm", month.to_s)
+        puts template
+        template.gsub!("mm", "%02d" % month.to_s)
         
         type = :short if type == :medium
         template.gsub!("MM", hash["month_#{type}".to_sym][month-1])
-        template.gsub!("dd", day_of_week.to_s)
+        template.gsub!("dd", "%02d" % day.to_s)
         template.gsub!("yyyy", year.to_s)
         template.gsub!("DD", hash["dow_#{type}".to_sym][day_of_week-1])
+        
+        return template
       end
       
       private 
@@ -74,6 +78,7 @@ module Mack
             :month_short => %w{Jan Feb Mär Apr Mai Jun Jul Aug Sep Okt Nov Dez},
             :month_long  => %w{Januar Februar März April Mai Juni Juli August September Oktober November Dezember},
             :df_short    => "dd/mm/yyyy",
+            :df_medium   => "DD, dd MM, yyyy",
             :df_long     => "DD, dd MM, yyyy"
           },
           :it => {

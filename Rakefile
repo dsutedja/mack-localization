@@ -6,7 +6,7 @@ require 'find'
 
 gem_spec = Gem::Specification.new do |s|
   s.name = 'mack-localization'
-  s.version = '0.1.0'
+  s.version = '0.5.0'
   s.summary = %{mack-localization}
   s.description = %{Localization support for Mack Framework}
   s.author = "Darsono Sutedja"

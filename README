@@ -1,3 +1,103 @@
-README
+Mack-localization GEM
 ========================================================================
-mack-localization
+
+Summary:
+Provide localization support for the Mack framework.
+   
+Setup:
+In  your mack application, you need to add the localization configuration file (localization.yml)
+in {APP}/config/localization.  By default the gem will create initial configuration which
+can be then be overwritten by the localization.yml file.  The following are the configurations
+supported:
+  - base_language
+    this will tell the gem gem what is the default language to use if none is specified
+
+  - supported_languages
+    this provides the array of languages to be supported.  Make sure that each language
+    defined here has a corresponding content file.
+
+  - char_encoding
+    this will set the default char encoding for the gem to use.  This feature is yet to 
+    be implemented.
+
+  - dynamic_translation
+    If this feature is set, then when a request for translated string cannot be found in
+    the language file, the system will perform a dynamic lookup to translation service,
+    and cache the content for future uses.  This feature is yet to be implemented
+
+  - content_expiry
+    Tell the system how often should it reload and cache the content.  
+    
+Sample localization.yml file:
+    base_language: 'fr'
+
+    supported_languages: 
+      - bp
+      - en
+      - fr
+      - it
+      - es
+      - de
+
+    char_encoding: 'utf-8'
+
+    dynamic_translation: true
+
+    content_expiry: 10
+
+----------------------------------------------
+
+Usage in application:
+
+When the gem is loaded into the application, there are several shortcut methods defined for the 
+application, they are:
+
+Globally accessible:
+l10n_config
+- give access to the configuration of the system
+
+l10n_translator 
+- give access to the translator instance
+
+l10n_formatter
+- give access to the formatter instance
+
+View helpers:
+l10n_gets
+get the string for a specific key in a view with a specified language
+
+l10n_getimg
+get the image for a specific key in a view with a specified language.
+This feature is yet to be implemented.
+
+l10n_date
+format date
+
+l10n_number
+format number
+
+l10n_currency
+format currency
+
+-------------------------------------------------
+File structure:
+
+The root folder of the localized files can be anywhere (and settable from the config file), however,
+the structure of the localized files is assumed.
+
+The system will assume the following file structure:
+
+{L10N_ROOT}/views/
+                 /content_en.rb
+                 /content_fr.rb
+                 /content_{any_language}.rb
+
+The content of content_lang.rb should be as followed:
+
+{
+    :key1 => "content 1",
+    :key2 => "content 2",
+    ...
+}
+
+NOTE: I'm thinking of changing the content file to use yaml structure instead of ruby hash.  
